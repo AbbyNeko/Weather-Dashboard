@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/3b66b0ed5f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="jumbotron">
+        <h1 class="display-4 text-center">Weather Dashboard</h1>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Search City buttons-->
+            <div class="col-3 city-buttons">
+
+                <div class="input-group">
+                    <input type="text" id="city" placeholder="Type in a City">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" id="search-city"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                    <div id="last-searched-cities"></div>
+
+            </div>
+
+            <!-- 5 Day Weather Forecast for City Selected -->
+
+            <div class="col-9">
+
+                <div class="row">
+
+                    <div class="col-12">
+
+                        <section id="current-weather"></section>
+
+                        <section id="future-forcecast"></section>
+
+                    </div>
+
+                </div>
+                
+            </div>
+
+        </div>
+
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+.city-buttons {
+    background-color:lightblue;
+    padding: 1em;
+    height: 90em;
+    margin-bottom: 3em;
+    margin-left: -2em;
+}
+
+#city {
+    padding: 0.3em;
+}
