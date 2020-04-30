@@ -1,47 +1,43 @@
-# Unit 06: Server-Side APIs
+# 06 Server-Side APIs: Weather Dashboard
 
-## Overview
-Up to this point, the work we’ve done is entirely *client*-side; that is, our programs only contain code that is executed and data that is generated within the browser (aka, on the client). In this unit, we will use the jQuery AJAX method to make requests to *server*-side APIs. 
+Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
 
-When we manipulate the DOM using JavaScript or jQuery, we are leveraging the DOM API. An API, or application programming interface, is a set of protocols that allows us to hook into the functionality of another application and use it within our own. The DOM API is an example of a **client-side API**. There are numerous client-side web APIs that extend the functionality of the browser. One such API is XMLHttpRequest, which allows us to communicate with server-side APIs. 
+Use the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that will provide basic setup and usage instructions. Use `localStorage` to store any persistent data.
 
-Companies and organizations that collect and store data often make that data available to web developers to use in their applications. A **server-side API** is one or more URLs, or endpoints, where we can make requests for data stored on a third-party server.
+## User Story
 
-When we make a request to a server-side API, we have no control over how long the response will take to resolve. This can create issues when dynamically generating HTML in the DOM because our JavaScript might execute before we receive the data we need to render elements. AJAX (asynchronous JavaScript and XML) is the integration of several technologies to address this asynchronicity of the client-server request-response pattern. 
+```
+AS A traveler
+I WANT to see the weather outlook for multiple cities
+SO THAT I can plan a trip accordingly
+```
 
-XML, or extensible markup language, is a specification for encoding documents (similar to HTML). It was the standard format for data exchange for many years but has been largely replaced by JSON, though we still refer to this approach as AJAX. The fetch API was recently introduced to make it easier to use the XMLHttpRequest object without the need for a third-party library such as jQuery.
+## Acceptance Criteria
 
-## Key Topics
-The following topics will be covered in this unit:
-* JSON
-* AJAX
-* HTTP GET requests
-* Server-side APIs
+```
+GIVEN a weather dashboard with form inputs
+WHEN I search for a city
+THEN I am presented with current and future conditions for that city and that city is added to the search history
+WHEN I view current weather conditions for that city
+THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+WHEN I view the UV index
+THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
+WHEN I view future weather conditions for that city
+THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
+WHEN I click on a city in the search history
+THEN I am again presented with current and future conditions for that city
+WHEN I open the weather dashboard
+THEN I am presented with the last searched city forecast
+```
 
-## Comprehension Check
-You will be employer-ready if you can answer the following questions:
-1. What is JSON?
-2. How does the client-server relationship work?
-3. What is an API?
 
-## Learning Objectives
-You will be employer-competitive if you are able to:
-* Explain the difference between a client-side and server-side API
-* Explain the client-server model and request-response pattern
-* Explain and implement HTTP GET requests and handle responses using AJAX
-* Parse JSON to dynamically generate HTML
-* Explain the benefits and challenges of working with asynchronous JavaScript
-* Explain and execute callbacks to handle asynchronous HTTP requests
+## Review
 
-## Homework: Weather Dashboard
-Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. In this homework assignment, your challenge is to build a weather dashboard using the OpenWeather API.
+You are required to submit the following for review:
 
-## Helpful Links
-* [MDN AJAX: Getting Started](https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started)
-* [Wikipedia: Web API](https://en.wikipedia.org/wiki/Web_API)
-* [Wikipedia: AJAX](https://en.wikipedia.org/wiki/Ajax_(programming))
-* [MDN: XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
-* [jQuery](https://api.jquery.com/)
+* The URL of the deployed application.
+
+* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 
 - - -
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
