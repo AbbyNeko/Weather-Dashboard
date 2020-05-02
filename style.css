@@ -1,3 +1,19 @@
+button {
+    text-decoration: none;
+    border:1px solid gray !important;
+}
+
+.jumbotron {
+    background-color: #033B61 !important;
+    color:white !important;
+    text-shadow: 1px 1px #696C6B;;
+}
+
+.btn-group-vertical {
+    margin-top: 1.3em;
+    width:85%;
+}
+
 #dashboard-head {
     max-height: 10em;
 }

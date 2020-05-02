@@ -2,9 +2,14 @@
 var lastSearchedCitiesArr = [];
 var apiKey = "3ef140f248af9099eb6c4c8305dc72fb";
 var todaysDate = moment().format('MMMM Do YYYY');
+var savedLastSearched = localStorage.getItem("lastSearchCities");
+
+if(savedLastSearched) {
+    lastSearchedCitiesArr = JSON.parse(savedLastSearched);
+    updateCityBtns(lastSearchedCitiesArr);
+}
 
 //Event listener for Search City button
-
 $("#search-city").on("click", function(evt) {
 
     evt.preventDefault();
@@ -19,10 +24,24 @@ $("#search-city").on("click", function(evt) {
     if(!isDuplicate(cityValue)) {
         lastSearchedCitiesArr.push(cityValue);
         localStorage.setItem("lastSearchCities", JSON.stringify(lastSearchedCitiesArr));
-        updateCityBtns(lastSearchedCitiesArr);
     }
+
+    updateCityBtns(lastSearchedCitiesArr);
+
            
 });
+
+
+//event listener for last city buttons
+$(".last-city").on("click", function() {
+
+    var cityAttr = $(this).attr("city");
+    console.log("city attribute - "+cityAttr);
+    searchWeatherAPI(cityAttr);
+
+});
+
+
 
 //Makes request to weather API to search for current weather conditions and 5 day forecast
 
@@ -34,12 +53,14 @@ function searchWeatherAPI(cityValue) {
         method: "GET"
     }).then(function(response){
 
-        console.log("response - "+JSON.stringify(response));
+        //console.log("response - "+JSON.stringify(response));
 
         //show current weather conditions
-        $("#city-header").append(cityValue);
-        $("#date").append(todaysDate);
+        $("#city-header").text(cityValue);
+        $("#date").text(todaysDate);
 
+        //empty div and then add in new data
+        $("#current-weather-data").empty();
         $("#current-weather").css({"border": "1px black solid", "border-radius": "25px"});
         $("#current-weather-data").append("<p>Weather: "+response.weather[0].main+"</p>");
         $("#current-weather-data").append("<p>Temperature: "+ convertToFahrenheit(response.main.temp) +"&deg;F</p>");
@@ -102,23 +123,28 @@ function convertToFahrenheit(kelvinTemp) {
 
 
 //Updates UI to have the newly added city buttons 
-function updateCityBtns(cityValue) {
+function updateCityBtns(lastSearchedCitiesArr) {
 
  /*
 how the last searched city buttons will look like
 
-<ul class="list-group">
   <li class="list-group-item active">Cras justo odio</li>
-  <li class="list-group-item">Dapibus ac facilisis in</li>
-  <li class="list-group-item">Morbi leo risus</li>
-  <li class="list-group-item">Porta ac consectetur ac</li>
-  <li class="list-group-item">Vestibulum at eros</li>
-</ul>
+
 */
 
+$(".btn-group-vertical").empty();
+
+     for(var n = 0; n < lastSearchedCitiesArr.length; n++) {
+
+        var listItem = $("<button>");
+        listItem.addClass("btn btn-light last-city");
+        listItem.attr("city", lastSearchedCitiesArr[n]);
+        listItem.text(lastSearchedCitiesArr[n]);
+        $(".btn-group-vertical").append(listItem);
+
+     }
 
 }
-
 
 //Checks if City value is already added to last searched cities array. If yes, return false. If city is new, return true.
 function isDuplicate(cityValue) {
