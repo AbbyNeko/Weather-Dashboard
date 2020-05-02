@@ -1,6 +1,7 @@
 
 var lastSearchedCitiesArr = [];
 var apiKey = "3ef140f248af9099eb6c4c8305dc72fb";
+var todaysDate = moment().format('MMMM Do YYYY');
 
 //Event listener for Search City button
 
@@ -27,6 +28,7 @@ $("#search-city").on("click", function(evt) {
 
 function searchWeatherAPI(cityValue) {
 
+    //Get current weather data
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/weather?q="+ cityValue +"&appid="+apiKey,
         method: "GET"
@@ -36,50 +38,51 @@ function searchWeatherAPI(cityValue) {
 
         //show current weather conditions
         $("#city-header").append(cityValue);
-        $("#date").append(moment().format('MMMM Do YYYY'));
+        $("#date").append(todaysDate);
 
         $("#current-weather").css({"border": "1px black solid", "border-radius": "25px"});
         $("#current-weather-data").append("<p>Weather: "+response.weather[0].main+"</p>");
         $("#current-weather-data").append("<p>Temperature: "+ convertToFahrenheit(response.main.temp) +"&deg;F</p>");
         $("#current-weather-data").append("<p>Humidity: "+response.main.humidity+"%</p>");
 
-        //show 5 day future forecast
-        $("#future-forecast").append("<h2>5-Day Forecast:</h2>");
-
     });
 
+    //Get 5 day weather forecast
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/forecast?q="+ cityValue +"&appid="+apiKey,
+        method:"GET"
+    }).then(function(response) {
 
-    /*
-        USING CARD GROUPS FOR #future-forecast section
+            console.log("5 day forecast result - "+JSON.stringify(response));
 
-            <div class="card-group">
-        <div class="card">
-            <img class="card-img-top" src="..." alt="Card image cap">
-            <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top" src="..." alt="Card image cap">
-            <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top" src="..." alt="Card image cap">
-            <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
-        </div>
+            //show 5 day future forecast
 
-    */
+            /*
+                USING CARD GROUPS FOR #future-forecast section
+
+                <div class="card">
+                    <img class="card-img-top" src="..." alt="Card image cap">
+                    <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+
+            
+
+            $("#future-forecast").append("<h2>5-Day Forecast:</h2>");
+            $(".card-group").append("<h2>5-Day Forecast:</h2>");
+
+            for(var i = 0; i < 5; i++) {
+
+                var cardDiv = $("<div>");
+                cardDiv.addClass("card");
+
+            }
+        */
+
+    });
 
 
 }
