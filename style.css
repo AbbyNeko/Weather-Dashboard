@@ -6,7 +6,8 @@ button {
 .jumbotron {
     background-color: #033B61 !important;
     color:white !important;
-    text-shadow: 1px 1px #696C6B;;
+    text-shadow: 1px 1px #696C6B;
+    border-radius: 0 !important;
 }
 
 .btn-group-vertical {

@@ -90,7 +90,7 @@ function searchWeatherAPI(cityValue) {
                     </div>
                 </div>
 
-            
+            */
 
             $("#future-forecast").append("<h2>5-Day Forecast:</h2>");
             $(".card-group").append("<h2>5-Day Forecast:</h2>");
@@ -101,7 +101,7 @@ function searchWeatherAPI(cityValue) {
                 cardDiv.addClass("card");
 
             }
-        */
+        
 
     });
 
