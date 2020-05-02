@@ -1,6 +1,6 @@
 
 var lastSearchedCitiesArr = [];
-
+var apiKey = "3ef140f248af9099eb6c4c8305dc72fb";
 
 //Event listener for Search City button
 
@@ -8,7 +8,7 @@ $("#search-city").on("click", function(evt) {
 
     evt.preventDefault();
 
-    var cityValue = $(this).val();
+    var cityValue = $("#city").val();
     console.log("city value - "+cityValue);
 
     //sends request to weather API and displays data on web page
@@ -25,7 +25,28 @@ $("#search-city").on("click", function(evt) {
 
 //Makes request to weather API to search for current weather conditions and 5 day forecast
 
-function searchWeatherAPI() {
+function searchWeatherAPI(cityValue) {
+
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/weather?q="+ cityValue +"&appid="+apiKey,
+        method: "GET"
+    }).then(function(response){
+
+        console.log("response - "+JSON.stringify(response));
+
+        //show current weather conditions
+        $("#city-header").append(cityValue);
+        $("#date").append(moment().format('MMMM Do YYYY'));
+
+        $("#current-weather").css({"border": "1px black solid", "border-radius": "25px"});
+        $("#current-weather-data").append("<p>Weather: "+response.weather[0].main+"</p>");
+        $("#current-weather-data").append("<p>Temperature: "+ convertToFahrenheit(response.main.temp) +"&deg;F</p>");
+        $("#current-weather-data").append("<p>Humidity: "+response.main.humidity+"%</p>");
+
+        //show 5 day future forecast
+        $("#future-forecast").append("<h2>5-Day Forecast:</h2>");
+
+    });
 
 
     /*
@@ -60,6 +81,19 @@ function searchWeatherAPI() {
 
     */
 
+
+}
+
+//convert Kelvin to Fahrenheit
+function convertToFahrenheit(kelvinTemp) {
+
+    var temp = parseFloat(kelvinTemp);
+    
+    var fTemp = temp-273.15
+    fTemp = fTemp * 1.80 + 32;
+    fTemp = fTemp.toFixed(2);
+
+    return fTemp;
 
 }
 
