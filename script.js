@@ -26,7 +26,9 @@ $("#search-city").on("click", function(evt) {
     }
 
     updateCityBtns(lastSearchedCitiesArr);
-
+    
+    //clear city text input
+    $("#city").val("");
            
 });
 
@@ -130,7 +132,7 @@ function getUVIndex(lat, lon) {
         method: "GET"
     }).then(function(uvResponse){
         
-        console.log("UV index response - "+JSON.stringify(uvResponse));
+        //console.log("UV index response - "+JSON.stringify(uvResponse));
         var colorBasedOnIndex = '';
         var textColor = "white";
 
