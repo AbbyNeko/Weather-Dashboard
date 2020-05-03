@@ -67,7 +67,12 @@ function searchWeatherAPI(cityValue) {
         $("#current-weather-data").append("<p><strong>Wind Speed:</strong> "+response.wind.speed+" MPH</p>");
         $("#current-weather-data").append("<p><strong>Humidity:</strong> "+response.main.humidity+"%</p>");
 
+            //gets UV index and displays it. block is color code based on how favorable conditions are
+             getUVIndex(response.coord.lat, response.coord.lon);
+
+
     });
+
 
     //Get 5 day weather forecast
     $.ajax({
@@ -112,6 +117,42 @@ function searchWeatherAPI(cityValue) {
 
     });
 
+
+}
+
+//Does AJAX request to get UV index. chooses color based on how favorable conditions are
+function getUVIndex(lat, lon) {
+
+    //console.log("date filter - "+moment().format("X"));
+
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/uvi/history?appid=3ef140f248af9099eb6c4c8305dc72fb&lat="+lat+"&lon="+lon+"&start="+moment().format("X")+"&end="+ moment().format("X") +"&cnt=1",
+        method: "GET"
+    }).then(function(uvResponse){
+        
+        console.log("UV index response - "+JSON.stringify(uvResponse));
+        var colorBasedOnIndex = '';
+        var textColor = "white";
+
+        if(uvResponse[0].value >= 0 && uvResponse[0].value < 3) {
+            colorBasedOnIndex = "green";
+        } else if(uvResponse[0].value >= 3 && uvResponse[0].value < 6) {
+            colorBasedOnIndex = "yellow"; 
+            //making text black to help with contrast
+            textColor = "black";
+        } else if(uvResponse[0].value >= 6 && uvResponse[0].value < 8) {
+            colorBasedOnIndex = "orange";
+        } else if(uvResponse[0].value >= 8 && uvResponse[0].value < 11) {
+            colorBasedOnIndex = "red";
+        } else if(uvResponse[0].value >= 11) {
+            colorBasedOnIndex = "purple";
+        }
+
+        //console.log("color based on index - "+colorBasedOnIndex);
+
+        $("#current-weather-data").append("<p><strong>UV Index: </strong><span style='border-radius:10px; padding:5px; width:20px; color:"+textColor+"; background-color:"+colorBasedOnIndex+";'>"+uvResponse[0].value+"</span></p>");
+
+    });
 
 }
 
