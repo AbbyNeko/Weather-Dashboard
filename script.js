@@ -9,9 +9,8 @@ if(savedLastSearched) {
 }
 
 //Event listener for Search City button
-$("#search-city").on("click", function(evt) {
+$("#search-city").on("click", function() {
 
-    evt.preventDefault();
 
     var cityValue = $("#city").val();
     //console.log("city value - "+cityValue);
@@ -31,17 +30,6 @@ $("#search-city").on("click", function(evt) {
     $("#city").val("");
            
 });
-
-
-//event listener for last city buttons
-$(".last-city").on("click", function() {
-
-    var cityAttr = $(this).attr("city");
-    //console.log("city attribute - "+cityAttr);
-    searchWeatherAPI(cityAttr);
-
-});
-
 
 
 //Makes request to weather API to search for current weather conditions and 5 day forecast
@@ -205,7 +193,7 @@ how the last searched city buttons will look like
 
 */
 
-$(".btn-group-vertical").empty();
+    $(".btn-group-vertical").empty();
 
      for(var n = 0; n < lastSearchedCitiesArr.length; n++) {
 
@@ -216,6 +204,15 @@ $(".btn-group-vertical").empty();
         $(".btn-group-vertical").append(listItem);
 
      }
+
+     //event listener for last city buttons
+    $(".last-city").on("click", function() {
+        console.log('click');
+        var cityAttr = $(this).attr("city");
+        //console.log("city attribute - "+cityAttr);
+        searchWeatherAPI(cityAttr);
+    });
+
 
 }
 
