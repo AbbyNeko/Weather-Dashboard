@@ -1,7 +1,6 @@
 
 var lastSearchedCitiesArr = [];
-var apiKey = "3ef140f248af9099eb6c4c8305dc72fb";
-var todaysDate = moment().format('MMMM Do YYYY');
+var todaysDate = moment().format('MMMM D, YYYY');
 var savedLastSearched = localStorage.getItem("lastSearchCities");
 
 if(savedLastSearched) {
@@ -15,7 +14,7 @@ $("#search-city").on("click", function(evt) {
     evt.preventDefault();
 
     var cityValue = $("#city").val();
-    console.log("city value - "+cityValue);
+    //console.log("city value - "+cityValue);
 
     //sends request to weather API and displays data on web page
     searchWeatherAPI(cityValue);
@@ -36,7 +35,7 @@ $("#search-city").on("click", function(evt) {
 $(".last-city").on("click", function() {
 
     var cityAttr = $(this).attr("city");
-    console.log("city attribute - "+cityAttr);
+    //console.log("city attribute - "+cityAttr);
     searchWeatherAPI(cityAttr);
 
 });
@@ -49,7 +48,7 @@ function searchWeatherAPI(cityValue) {
 
     //Get current weather data
     $.ajax({
-        url: "https://api.openweathermap.org/data/2.5/weather?q="+ cityValue +"&appid="+apiKey,
+        url: "https://api.openweathermap.org/data/2.5/weather?q="+ cityValue +"&appid=3ef140f248af9099eb6c4c8305dc72fb",
         method: "GET"
     }).then(function(response){
 
@@ -62,43 +61,51 @@ function searchWeatherAPI(cityValue) {
         //empty div and then add in new data
         $("#current-weather-data").empty();
         $("#current-weather").css({"border": "1px black solid", "border-radius": "25px"});
-        $("#current-weather-data").append("<p>Weather: "+response.weather[0].main+"</p>");
-        $("#current-weather-data").append("<p>Temperature: "+ convertToFahrenheit(response.main.temp) +"&deg;F</p>");
-        $("#current-weather-data").append("<p>Humidity: "+response.main.humidity+"%</p>");
+        $("#current-weather-data").append("<img src='https://openweathermap.org/img/w/"+response.weather[0].icon+".png' alt='weather icon'/>");
+        $("#current-weather-data").append("<p><strong>Weather:</strong> "+response.weather[0].main+"</p>");
+        $("#current-weather-data").append("<p><strong>Temperature:</strong> "+ convertToFahrenheit(response.main.temp) +"&deg;F</p>");
+        $("#current-weather-data").append("<p><strong>Wind Speed:</strong> "+response.wind.speed+" MPH</p>");
+        $("#current-weather-data").append("<p><strong>Humidity:</strong> "+response.main.humidity+"%</p>");
 
     });
 
     //Get 5 day weather forecast
     $.ajax({
-        url: "https://api.openweathermap.org/data/2.5/forecast?q="+ cityValue +"&appid="+apiKey,
+        url: "https://api.openweathermap.org/data/2.5/forecast?q="+ cityValue +"&appid=3ef140f248af9099eb6c4c8305dc72fb",
         method:"GET"
     }).then(function(response) {
 
-            console.log("5 day forecast result - "+JSON.stringify(response));
+            //console.log("5 day forecast result - "+JSON.stringify(response));
+            //console.log("5 day forecast result list - "+JSON.stringify(response.list));
+
 
             //show 5 day future forecast
+            $(".forecast-label").text("5-Day Forecast:");
+            $(".card-group").empty();
 
-            /*
-                USING CARD GROUPS FOR #future-forecast section
-
-                <div class="card">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-                    <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-
-            */
-
-            $("#future-forecast").append("<h2>5-Day Forecast:</h2>");
-            $(".card-group").append("<h2>5-Day Forecast:</h2>");
+            var daysPassed = 1;
+            var currentDay = '';
 
             for(var i = 0; i < 5; i++) {
 
+                //display date of next day, date after and so forth
+                currentDay = moment().add(daysPassed, "days");
                 var cardDiv = $("<div>");
                 cardDiv.addClass("card");
+
+                var cardBody = $("<div>");
+                cardBody.addClass("card-body");
+                cardBody.append("<p><strong>"+ currentDay.format('MM/DD/YYYY') +"</strong></p>");
+
+                var forecastData = searchForecastData(currentDay, response);
+                cardBody.append("<img src='https://openweathermap.org/img/w/"+forecastData.weather[0].icon+".png' alt='weather icon'/>");
+                cardBody.append("<p><strong>Temp:</strong> "+ convertToFahrenheit(forecastData.main.temp) +"&deg;F</p>");
+                cardBody.append("<p><strong>Humidity:</strong> "+ forecastData.main.humidity +"%</p>");
+
+                cardDiv.append(cardBody);
+                $(".card-group").append(cardDiv);
+
+                daysPassed++;
 
             }
         
@@ -108,6 +115,29 @@ function searchWeatherAPI(cityValue) {
 
 }
 
+//Search Forecast data response by date. Returns weather object data
+function searchForecastData(date, response) {
+
+    var currentDate = date.format('YYYY-MM-DD');
+    currentDate += " 03:00:00";
+    //console.log("current date - "+currentDate);
+
+    //jquery version of array.filter
+    var check = $.grep(response.list, function(element, index) {
+        return element.dt_txt == currentDate;
+    });
+
+   //console.log("check forecast data - "+JSON.stringify(check));
+    
+    if(check != null && check.length > 0) {
+        return check[0];
+    } else {
+        return '';
+    }
+
+}
+
+ 
 //convert Kelvin to Fahrenheit
 function convertToFahrenheit(kelvinTemp) {
 

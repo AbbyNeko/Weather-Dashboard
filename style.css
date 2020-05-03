@@ -35,8 +35,11 @@ button {
 .city-buttons {
     background-color:lightblue;
     padding: 1em;
-    min-height: 35em;
+    min-height: 42em;
     margin-bottom: 3em;
     margin-left: -2em;
 }
 
+.forecast-label {
+    margin-top: 1.3em;
+}
