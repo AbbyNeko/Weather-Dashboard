@@ -94,7 +94,7 @@ function searchWeatherAPI(cityValue) {
                 cardDiv.addClass("card");
 
                 var cardBody = $("<div>");
-                cardBody.addClass("card-body");
+                cardBody.addClass("card-body text-center");
                 cardBody.append("<p><strong>"+ currentDay.format('MM/DD/YYYY') +"</strong></p>");
 
                 var forecastData = searchForecastData(currentDay, response);
