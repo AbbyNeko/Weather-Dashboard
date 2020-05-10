@@ -42,7 +42,7 @@ function searchWeatherAPI(cityValue) {
         method: "GET"
     }).then(function(response){
 
-        //console.log("response - "+JSON.stringify(response));
+        console.log("response - "+JSON.stringify(response));
 
         //show current weather conditions
         $("#city-header").text(cityValue);
@@ -50,7 +50,7 @@ function searchWeatherAPI(cityValue) {
 
         //empty div and then add in new data
         $("#current-weather-data").empty();
-        $("#current-weather").css({"border": "1px black solid", "border-radius": "25px"});
+        $("#current-weather").css({"border": "1px black solid", "border-radius": "25px", "padding":"10px"});
         $("#current-weather-data").append("<img src='https://openweathermap.org/img/w/"+response.weather[0].icon+".png' alt='weather icon'/>");
         $("#current-weather-data").append("<p><strong>Weather:</strong> "+response.weather[0].main+"</p>");
         $("#current-weather-data").append("<p><strong>Temperature:</strong> "+ convertToFahrenheit(response.main.temp) +"&deg;F</p>");
@@ -207,7 +207,7 @@ how the last searched city buttons will look like
 
      //event listener for last city buttons
     $(".last-city").on("click", function() {
-        console.log('click');
+       // console.log('click');
         var cityAttr = $(this).attr("city");
         //console.log("city attribute - "+cityAttr);
         searchWeatherAPI(cityAttr);

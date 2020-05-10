@@ -21,47 +21,39 @@
         <div class="row">
 
             <!-- Search City buttons-->
-            <div class="col-3 city-buttons">
-
-                <div class="input-group">
-                    <input type="text" id="city" placeholder="Type in a City">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" id="search-city"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
+            <div class="col-lg-3 col-md-12 city-buttons">
 
                     <div id="last-searched-cities">
+                        <div class="input-group">
+                            <input type="text" id="city" placeholder="Type in a City">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="search-city"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                         <div class="btn-group-vertical"></div>
                     </div>
 
             </div>
 
-            <!-- 5 Day Weather Forecast for City Selected -->
+             <!-- 5 Day Weather Forecast for City Selected -->
 
-            <div class="col-9">
+            <div class="col-lg-7 col-md-12">
 
-                <div class="row">
+                <section id="current-weather" class="text-center">
+                    <h2 id="city-header"></h2>
+                    <h5 id="date"></h5>
+                    <p id="current-weather-data"></p>
+                </section>
 
-                    <div class="col-12">
+                <section id="future-forcecast">
+                    <h2 class="forecast-label"></h2>
+                    <div class="card-group"></div>
+                </section>
 
-                        <section id="current-weather" class="text-center">
-                            <h2 id="city-header"></h2>
-                            <h5 id="date"></h5>
-                            <p id="current-weather-data"></p>
-                        </section>
-
-                        <section id="future-forcecast">
-                            <h2 class="forecast-label"></h2>
-                            <div class="card-group"></div>
-                        </section>
-
-                    </div>
-
-                </div>
-                
             </div>
-
+        
         </div>
+
 
     </div>
     

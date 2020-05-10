@@ -3,6 +3,19 @@ button {
     border:1px solid gray !important;
 }
 
+.btn-group-vertical {
+    display: block !important;
+    margin-top: 1.3em;
+    width:85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-group input[type="text"] {
+    display: block;
+    margin-left: 7.5%;
+}
+
 .jumbotron {
     background-color: #033B61 !important;
     color:white !important;
@@ -10,17 +23,11 @@ button {
     border-radius: 0 !important;
 }
 
-.btn-group-vertical {
-    margin-top: 1.3em;
-    width:85%;
-}
-
 #dashboard-head {
     max-height: 10em;
 }
 
 #current-weather {
-    padding: 1.4em;
     min-height: 10em;
 }
 
@@ -37,9 +44,8 @@ button {
     padding: 1em;
     min-height: 45em;
     margin-bottom: 3em;
-    margin-left: -2em;
 }
 
 .forecast-label {
-    margin-top: 1.3em;
+    margin-top: 0.7em;
 }
