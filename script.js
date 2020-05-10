@@ -42,7 +42,7 @@ function searchWeatherAPI(cityValue) {
         method: "GET"
     }).then(function(response){
 
-        console.log("response - "+JSON.stringify(response));
+        //console.log("response - "+JSON.stringify(response));
 
         //show current weather conditions
         $("#city-header").text(cityValue);
