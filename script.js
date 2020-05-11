@@ -226,7 +226,7 @@ function updateCityBtns(lastSearchedCitiesArr) {
 function isDuplicate(cityValue) {
 
     var check = lastSearchedCitiesArr.filter(function(n) {
-        return n == cityValue;
+        return n == cityValue || n == cityValue.toLowerCase();
     });
 
     if(check != null && check.length > 0) {
@@ -277,8 +277,10 @@ function showLocalWeather(position) {
 
         showFiveDayForecast(response);
 
-        lastSearchedCitiesArr.push(response.city.name);
-        updateCityBtns(lastSearchedCitiesArr);
+        if(!isDuplicate(response.city.name)) {
+            lastSearchedCitiesArr.push(response.city.name);
+            updateCityBtns(lastSearchedCitiesArr);
+        }
 
     });
     
