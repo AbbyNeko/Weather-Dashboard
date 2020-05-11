@@ -226,7 +226,7 @@ function updateCityBtns(lastSearchedCitiesArr) {
 function isDuplicate(cityValue) {
 
     var check = lastSearchedCitiesArr.filter(function(n) {
-        return n == cityValue || n.toLowerCase() == cityValue;
+        return n == cityValue || n.toLowerCase() == cityValue || n == cityValue.toLowerCase();
     });
 
     if(check != null && check.length > 0) {
