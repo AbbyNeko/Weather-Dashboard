@@ -44,6 +44,30 @@ function searchWeatherAPI(cityValue) {
 
         //console.log("response - "+JSON.stringify(response));
 
+        showCurrentWeather(response, cityValue);
+
+
+    });
+
+
+    //Get 5 day weather forecast
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/forecast?q="+ cityValue +"&appid=3ef140f248af9099eb6c4c8305dc72fb",
+        method:"GET"
+    }).then(function(response) {
+
+     //console.log("5 day forecast result - "+JSON.stringify(response));
+    //console.log("5 day forecast result list - "+JSON.stringify(response.list));
+
+     showFiveDayForecast(response);        
+
+    });
+
+
+}
+
+function showCurrentWeather(response, cityValue) {
+
         //show current weather conditions
         $("#city-header").text(cityValue);
         $("#date").text(todaysDate);
@@ -57,59 +81,46 @@ function searchWeatherAPI(cityValue) {
         $("#current-weather-data").append("<p><strong>Wind Speed:</strong> "+response.wind.speed+" MPH</p>");
         $("#current-weather-data").append("<p><strong>Humidity:</strong> "+response.main.humidity+"%</p>");
 
-            //gets UV index and displays it. block is color code based on how favorable conditions are
-             getUVIndex(response.coord.lat, response.coord.lon);
-
-
-    });
-
-
-    //Get 5 day weather forecast
-    $.ajax({
-        url: "https://api.openweathermap.org/data/2.5/forecast?q="+ cityValue +"&appid=3ef140f248af9099eb6c4c8305dc72fb",
-        method:"GET"
-    }).then(function(response) {
-
-            //console.log("5 day forecast result - "+JSON.stringify(response));
-            //console.log("5 day forecast result list - "+JSON.stringify(response.list));
-
-
-            //show 5 day future forecast
-            $(".forecast-label").text("5-Day Forecast:");
-            $(".card-group").empty();
-
-            var daysPassed = 1;
-            var currentDay = '';
-
-            for(var i = 0; i < 5; i++) {
-
-                //display date of next day, date after and so forth
-                currentDay = moment().add(daysPassed, "days");
-                var cardDiv = $("<div>");
-                cardDiv.addClass("card");
-
-                var cardBody = $("<div>");
-                cardBody.addClass("card-body text-center");
-                cardBody.append("<p><strong>"+ currentDay.format('MM/DD/YYYY') +"</strong></p>");
-
-                var forecastData = searchForecastData(currentDay, response);
-                cardBody.append("<img src='https://openweathermap.org/img/w/"+forecastData.weather[0].icon+".png' alt='weather icon'/>");
-                cardBody.append("<p><strong>Temp:</strong> "+ convertToFahrenheit(forecastData.main.temp) +"&deg;F</p>");
-                cardBody.append("<p><strong>Humidity:</strong> "+ forecastData.main.humidity +"%</p>");
-
-                cardDiv.append(cardBody);
-                $(".card-group").append(cardDiv);
-
-                daysPassed++;
-
-            }
-        
-
-    });
-
+        //gets UV index and displays it. block is color code based on how favorable conditions are
+        getUVIndex(response.coord.lat, response.coord.lon);
 
 }
 
+function showFiveDayForecast(response) {
+
+                //show 5 day future forecast
+                $(".forecast-label").text("5-Day Forecast:");
+                $(".card-group").empty();
+    
+                var daysPassed = 1;
+                var currentDay = '';
+    
+                for(var i = 0; i < 5; i++) {
+    
+                    //display date of next day, date after and so forth
+                    currentDay = moment().add(daysPassed, "days");
+                    var cardDiv = $("<div>");
+                    cardDiv.addClass("card");
+    
+                    var cardBody = $("<div>");
+                    cardBody.addClass("card-body text-center");
+                    cardBody.append("<p><strong>"+ currentDay.format('MM/DD/YYYY') +"</strong></p>");
+    
+                    var forecastData = searchForecastData(currentDay, response);
+                    //console.log("forecast data - "+JSON.stringify(forecastData));
+                    cardBody.append("<img src='https://openweathermap.org/img/w/"+forecastData.weather[0].icon+".png' alt='weather icon'/>");
+                    cardBody.append("<p><strong>Temp:</strong> "+ convertToFahrenheit(forecastData.main.temp) +"&deg;F</p>");
+                    cardBody.append("<p><strong>Humidity:</strong> "+ forecastData.main.humidity +"%</p>");
+    
+                    cardDiv.append(cardBody);
+                    $(".card-group").append(cardDiv);
+    
+                    daysPassed++;
+    
+                }
+
+}
+ 
 //Does AJAX request to get UV index. chooses color based on how favorable conditions are
 function getUVIndex(lat, lon) {
 
@@ -150,12 +161,13 @@ function getUVIndex(lat, lon) {
 function searchForecastData(date, response) {
 
     var currentDate = date.format('YYYY-MM-DD');
-    currentDate += " 03:00:00";
     //console.log("current date - "+currentDate);
+    //console.log("r - "+JSON.stringify(response.list));
 
     //jquery version of array.filter
+    //Time is every 3 hours so if it's past 6 there will be no 3:00 time so it checks for all times and takes the first forecast
     var check = $.grep(response.list, function(element, index) {
-        return element.dt_txt == currentDate;
+        return element.dt_txt == currentDate+" 03:00:00" || element.dt_txt == currentDate+" 06:00:00" || element.dt_txt == currentDate+" 09:00:00" || element.dt_txt == currentDate+" 12:00:00";
     });
 
    //console.log("check forecast data - "+JSON.stringify(check));
@@ -186,12 +198,6 @@ function convertToFahrenheit(kelvinTemp) {
 //Updates UI to have the newly added city buttons 
 function updateCityBtns(lastSearchedCitiesArr) {
 
- /*
-how the last searched city buttons will look like
-
-  <li class="list-group-item active">Cras justo odio</li>
-
-*/
 
     $(".btn-group-vertical").empty();
 
@@ -234,8 +240,48 @@ function isDuplicate(cityValue) {
 //Gets location of user and if user allows location to be used, pull in current weather data
 function getLocalWeather() {
 
-    
+    //if geolocation is available
+    if(navigator.geolocation) {
 
+     navigator.geolocation.getCurrentPosition(showLocalWeather);
+
+    } 
+
+}
+
+function showLocalWeather(position) {
+
+    var positionObj = {};
+    positionObj.latitude = position.coords.latitude;
+    positionObj.longitude = position.coords.longitude;
+
+    //console.log("position - "+JSON.stringify(positionObj));
+
+    //get current weather conditions using lattitude and longitude
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/weather?lat="+positionObj.latitude+"&lon="+positionObj.longitude+"&appid=3ef140f248af9099eb6c4c8305dc72fb",
+        method: "GET"
+    }).then(function(response) {
+
+        showCurrentWeather(response, response.name);
+
+    });
+
+    //get 5 day forecast using Lattitude and Longitude
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/forecast?lat="+positionObj.latitude+"&lon="+positionObj.longitude+"&appid=3ef140f248af9099eb6c4c8305dc72fb",
+        method: "GET"
+    }).then(function(response) {
+
+        //console.log("response - "+JSON.stringify(response));
+
+        showFiveDayForecast(response);
+
+        lastSearchedCitiesArr.push(response.city.name);
+        updateCityBtns(lastSearchedCitiesArr);
+
+    });
+    
 }
 
 getLocalWeather();
