@@ -230,3 +230,12 @@ function isDuplicate(cityValue) {
     }
     
 }
+
+//Gets location of user and if user allows location to be used, pull in current weather data
+function getLocalWeather() {
+
+    
+
+}
+
+getLocalWeather();
