@@ -36,10 +36,3 @@ You can add on additional changes to the code. However, you must switch out the 
 ## Tests
 To test this project, click all the buttons and make sure they work correctly. Be sure to check the console log for errors.
 
-
-## Questions
-![Image of AbbyNeko](https://avatars2.githubusercontent.com/u/17650466?v=4&s=200)
-
-**AbbyNeko**
-
-If you have any questions, please contact me at: alimpioso@gmail.com
